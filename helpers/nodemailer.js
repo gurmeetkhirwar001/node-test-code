@@ -1,6 +1,9 @@
 const nodemailer = require("nodemailer");
 const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey(process.env.API_KEY);
+console.log(process.env.API_KEY);
+sgMail.setApiKey(
+  "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"
+);
 const sendmail = async (req, res, userMail, subject, text) => {
   try {
     const msg = {
@@ -10,7 +13,7 @@ const sendmail = async (req, res, userMail, subject, text) => {
       html: text,
     };
     //ES6
-    sgMail.send(msg).then(
+    return sgMail.send(msg).then(
       () => {},
       (error) => {
         console.error(error);
@@ -21,8 +24,6 @@ const sendmail = async (req, res, userMail, subject, text) => {
       }
     );
     console.log(userMail, "userMail");
-
-    return mail;
   } catch (error) {
     console.log(error);
   }
