@@ -1,27 +1,27 @@
 const nodemailer = require("nodemailer");
-
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.API_KEY);
 const sendmail = async (req, res, userMail, subject, text) => {
   try {
-    console.log(userMail, "userMail");
-    const mailOptions = {
-      from: "mastrotesting4395@gmail.com",
+    const msg = {
       to: userMail,
+      from: "mastrolinks@gmail.com", // Use the email address or domain you verified above
       subject: subject,
-      text: text,
+      html: text,
     };
-    const transporter = nodemailer.createTransport({
-      service: "Gmail",
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS,
-      },
-    });
-    const mail = await transporter.sendMail(mailOptions);
-    // if(!mail){
-    //     throw Error('Email is not present');
-    // }
+    //ES6
+    sgMail.send(msg).then(
+      () => {},
+      (error) => {
+        console.error(error);
+
+        if (error.response) {
+          return error.response.body;
+        }
+      }
+    );
+    console.log(userMail, "userMail");
+
     return mail;
   } catch (error) {
     console.log(error);
